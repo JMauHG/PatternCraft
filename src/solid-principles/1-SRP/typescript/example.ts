@@ -20,10 +20,6 @@ class Invoice {
   getAll(): InvoiceData[] {
     return [...this.invoices];
   }
-
-  getTotal(): number {
-    return this.invoices.reduce((sum, inv) => sum + inv.amount, 0);
-  }
 }
 
 // ✅ GOOD: Report class - ONLY generates reports
@@ -31,12 +27,9 @@ class Report {
   generate(invoices: InvoiceData[]): string {
     console.log('\n[Report] Generating report...');
     let report = '=== INVOICE REPORT ===\n';
-    let total = 0;
     for (const inv of invoices) {
       report += `${inv.id}: ${inv.client} - $${inv.amount}\n`;
-      total += inv.amount;
     }
-    report += `======================\nTotal: $${total}`;
 
     console.log(`[Report] Content:\n${report}`);
     return report;

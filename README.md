@@ -24,6 +24,16 @@ Install this vs code extensions:
 | **ISP** | Interface Segregation: small, focused interfaces |
 | **DIP** | Dependency Inversion: depend on abstractions |
 
+### Design Patterns
+
+Design patterns are proven solutions to common problems in software development.
+
+| Category | Patterns |
+|----------|----------|
+| **Creational** | Singleton, Builder, Factory Method, Abstract Factory, Prototype |
+| **Structural** | *(Coming soon)* |
+| **Behavioral** | *(Coming soon)* |
+
 ## Languages
 
 Currently available in:
@@ -39,10 +49,15 @@ src/
     3-LSP/
     4-ISP/
     5-DIP/
-  design-patterns/           # (Coming soon)
+  design-patterns/           # Design Patterns
     creational/
-    structural/
-    behavioral/
+      1-Singleton/
+      2-Builder/
+      3-Factory-Method/
+      4-Abstract-Factory/
+      5-Prototype/
+    structural/              # (Coming soon)
+    behavioral/              # (Coming soon)
 ```
 
 ## How to Run Examples

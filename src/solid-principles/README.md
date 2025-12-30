@@ -43,7 +43,6 @@ db = new Database()
 service = new UserService(db)  // ← This is where dependency is injected.
 ```
 
-
 ## Quick Reference
 
 ```
