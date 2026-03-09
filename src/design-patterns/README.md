@@ -28,6 +28,7 @@ src/design-patterns/
 │   ├── 3-Factory-Method/
 │   ├── 4-Abstract-Factory/
 │   └── 5-Prototype/
-├── structural/          # (Coming soon)
+├── structural/
+│   └── 1-Adapter/
 └── behavioral/          # (Coming soon)
 ```
