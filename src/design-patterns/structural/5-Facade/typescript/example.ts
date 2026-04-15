@@ -2,114 +2,109 @@
 
 // ===== COMPLEX SUBSYSTEM =====
 
-class InventoryService {
-  public check(productId: string): boolean {
-    console.log(`  [Inventory] Checking stock for product ${productId}`);
-    return true;
+class CodecFactory {
+  public extractAudio(file: string): string {
+    console.log(`  [CodecFactory] Extracting audio stream from "${file}"`);
+    return `audio_${file}`;
   }
 
-  public reserve(productId: string): void {
-    console.log(`  [Inventory] Reserved product ${productId}`);
-  }
-}
-
-class PaymentService {
-  public validate(cardNumber: string): boolean {
-    console.log(`  [Payment] Validating card ending in ${cardNumber.slice(-4)}`);
-    return true;
+  public extractVideo(file: string): string {
+    console.log(`  [CodecFactory] Extracting video stream from "${file}"`);
+    return `video_${file}`;
   }
 
-  public charge(cardNumber: string, amount: number): string {
-    console.log(`  [Payment] Charged $${amount} to card ending in ${cardNumber.slice(-4)}`);
-    return `txn_${Date.now()}`;
-  }
-}
-
-class ShippingService {
-  public calculateCost(address: string): number {
-    console.log(`  [Shipping] Calculating cost for "${address}"`);
-    return 9.99;
-  }
-
-  public schedule(address: string): string {
-    console.log(`  [Shipping] Scheduled delivery to "${address}"`);
-    return `ship_${Date.now()}`;
+  public getCodec(format: string): string {
+    const codecs: Record<string, string> = {
+      mp4: 'H.264',
+      avi: 'MPEG-4',
+      webm: 'VP9',
+      mkv: 'H.265',
+    };
+    const codec = codecs[format] || 'H.264';
+    console.log(`  [CodecFactory] Selected codec: ${codec} for format "${format}"`);
+    return codec;
   }
 }
 
-class NotificationService {
-  public sendConfirmation(email: string, orderId: string): void {
-    console.log(`  [Notification] Sent confirmation for order ${orderId} to ${email}`);
+class AudioMixer {
+  public normalize(audioStream: string): string {
+    console.log(`  [AudioMixer] Normalizing audio levels for "${audioStream}"`);
+    return `normalized_${audioStream}`;
+  }
+
+  public adjustBitrate(audioStream: string, bitrate: number): string {
+    console.log(`  [AudioMixer] Setting audio bitrate to ${bitrate}kbps`);
+    return `${audioStream}_${bitrate}kbps`;
+  }
+}
+
+class BitrateAnalyzer {
+  public analyze(videoStream: string): number {
+    console.log(`  [BitrateAnalyzer] Analyzing bitrate of "${videoStream}"`);
+    const optimalBitrate = 4500;
+    console.log(`  [BitrateAnalyzer] Optimal bitrate: ${optimalBitrate}kbps`);
+    return optimalBitrate;
+  }
+}
+
+class FileWriter {
+  public write(videoStream: string, audioStream: string, codec: string, format: string): string {
+    const outputFile = `output.${format}`;
+    console.log(`  [FileWriter] Encoding with ${codec} codec`);
+    console.log(`  [FileWriter] Muxing video and audio streams`);
+    console.log(`  [FileWriter] Writing result to "${outputFile}"`);
+    return outputFile;
   }
 }
 
 // ===== FACADE =====
 
-interface OrderRequest {
-  productId: string;
-  cardNumber: string;
-  amount: number;
-  address: string;
-  email: string;
-}
-
-class OrderFacade {
-  private inventory: InventoryService;
-  private payment: PaymentService;
-  private shipping: ShippingService;
-  private notification: NotificationService;
+class VideoConverter {
+  private codecFactory: CodecFactory;
+  private audioMixer: AudioMixer;
+  private bitrateAnalyzer: BitrateAnalyzer;
+  private fileWriter: FileWriter;
 
   constructor() {
-    this.inventory = new InventoryService();
-    this.payment = new PaymentService();
-    this.shipping = new ShippingService();
-    this.notification = new NotificationService();
+    this.codecFactory = new CodecFactory();
+    this.audioMixer = new AudioMixer();
+    this.bitrateAnalyzer = new BitrateAnalyzer();
+    this.fileWriter = new FileWriter();
   }
 
-  public placeOrder(request: OrderRequest): string {
-    // Orchestrates the entire workflow in the correct order
-    if (!this.inventory.check(request.productId)) {
-      return 'FAILED: Product out of stock';
-    }
+  public convert(file: string, format: string): string {
+    // Orchestrates the entire conversion pipeline in the correct order
+    const videoStream = this.codecFactory.extractVideo(file);
+    const audioStream = this.codecFactory.extractAudio(file);
+    const codec = this.codecFactory.getCodec(format);
 
-    if (!this.payment.validate(request.cardNumber)) {
-      return 'FAILED: Invalid payment method';
-    }
+    const optimalBitrate = this.bitrateAnalyzer.analyze(videoStream);
 
-    this.inventory.reserve(request.productId);
-    const shippingCost = this.shipping.calculateCost(request.address);
-    const txnId = this.payment.charge(request.cardNumber, request.amount + shippingCost);
-    const shipId = this.shipping.schedule(request.address);
-    const orderId = `order_${txnId}_${shipId}`;
-    this.notification.sendConfirmation(request.email, orderId);
+    const normalizedAudio = this.audioMixer.normalize(audioStream);
+    const finalAudio = this.audioMixer.adjustBitrate(normalizedAudio, optimalBitrate > 4000 ? 192 : 128);
 
-    return orderId;
+    const outputFile = this.fileWriter.write(videoStream, finalAudio, codec, format);
+    return outputFile;
   }
 }
 
 // ============ DEMO ============
 
 function main(): void {
-  console.log('=== Facade Pattern: E-Commerce Order System ===\n');
+  console.log('=== Facade Pattern: Video Conversion Library ===\n');
 
-  const facade = new OrderFacade();
+  const converter = new VideoConverter();
 
-  console.log('--- Placing order via facade (single call) ---\n');
-  const orderId = facade.placeOrder({
-    productId: 'PHONE-123',
-    cardNumber: '4111111111111234',
-    amount: 899,
-    address: '123 Main St, Springfield',
-    email: 'user@example.com',
-  });
+  console.log('--- Converting video via facade (single call) ---\n');
+  const result = converter.convert('vacation.avi', 'mp4');
 
-  console.log(`\nOrder placed: ${orderId}`);
+  console.log(`\nConversion complete: ${result}`);
 
   console.log('\n Benefits of Facade Pattern:');
-  console.log('  - Client calls one method instead of orchestrating 4 services');
+  console.log('  - Client calls one method instead of orchestrating 4 subsystems');
   console.log('  - Subsystem initialization is handled by the facade');
   console.log('  - Correct execution order is guaranteed internally');
-  console.log('  - Subsystem services can still be used directly for advanced cases');
+  console.log('  - Subsystem classes can still be used directly for advanced cases');
 }
 
 main();

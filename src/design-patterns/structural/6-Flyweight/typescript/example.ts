@@ -1,108 +1,121 @@
-// ✅ GOOD: Flyweight Pattern - Share intrinsic state across many objects
+// ✅ GOOD: Flyweight Pattern - Share glyph data across character instances
 
 // Flyweight: holds only shared, immutable state (intrinsic)
-class TreeType {
-  private name: string;
-  private color: string;
-  private texture: string;
+class Glyph {
+  private character: string;
+  private fontFamily: string;
+  private outline: string;
 
-  constructor(name: string, color: string, texture: string) {
-    this.name = name;
-    this.color = color;
-    this.texture = texture;
+  constructor(character: string, fontFamily: string, outline: string) {
+    this.character = character;
+    this.fontFamily = fontFamily;
+    this.outline = outline;
   }
 
-  // Extrinsic state (x, y) is passed in — not stored in the flyweight
-  public draw(x: number, y: number): string {
-    return `${this.name} [${this.color}, ${this.texture}] at (${x}, ${y})`;
+  // Extrinsic state (row, col, fontSize, bold) is passed in — not stored in the flyweight
+  public render(row: number, col: number, fontSize: number, bold: boolean): string {
+    const style = bold ? 'bold' : 'normal';
+    return `'${this.character}' [${this.fontFamily}, ${this.outline}] at (${row}, ${col}) size=${fontSize} ${style}`;
   }
 }
 
-// Flyweight factory: manages the pool of shared TreeType instances
-class TreeTypeFactory {
-  private static cache: Map<string, TreeType> = new Map();
+// Flyweight factory: manages the pool of shared Glyph instances
+class GlyphFactory {
+  private static cache: Map<string, Glyph> = new Map();
 
-  public static getTreeType(name: string, color: string, texture: string): TreeType {
-    const key = `${name}-${color}-${texture}`;
+  public static getGlyph(character: string, fontFamily: string, outline: string): Glyph {
+    const key = `${character}-${fontFamily}`;
 
     if (!this.cache.has(key)) {
-      this.cache.set(key, new TreeType(name, color, texture));
+      this.cache.set(key, new Glyph(character, fontFamily, outline));
     }
 
     return this.cache.get(key)!;
   }
 
-  public static getTypeCount(): number {
+  public static getGlyphCount(): number {
     return this.cache.size;
   }
 }
 
 // Context object: holds extrinsic state and references a flyweight
-class Tree {
-  private x: number;
-  private y: number;
-  private type: TreeType;
+class RenderedCharacter {
+  private row: number;
+  private col: number;
+  private fontSize: number;
+  private bold: boolean;
+  private glyph: Glyph;
 
-  constructor(x: number, y: number, type: TreeType) {
-    this.x = x;
-    this.y = y;
-    this.type = type;
+  constructor(row: number, col: number, fontSize: number, bold: boolean, glyph: Glyph) {
+    this.row = row;
+    this.col = col;
+    this.fontSize = fontSize;
+    this.bold = bold;
+    this.glyph = glyph;
   }
 
-  public draw(): string {
-    return this.type.draw(this.x, this.y);
+  public render(): string {
+    return this.glyph.render(this.row, this.col, this.fontSize, this.bold);
   }
 }
 
-// Forest manages all trees
-class Forest {
-  private trees: Tree[] = [];
+// Document manages all rendered characters
+class Document {
+  private characters: RenderedCharacter[] = [];
 
-  public plantTree(x: number, y: number, name: string, color: string, texture: string): void {
-    const type = TreeTypeFactory.getTreeType(name, color, texture);
-    this.trees.push(new Tree(x, y, type));
+  public addCharacter(
+    row: number,
+    col: number,
+    character: string,
+    fontFamily: string,
+    outline: string,
+    fontSize: number,
+    bold: boolean
+  ): void {
+    const glyph = GlyphFactory.getGlyph(character, fontFamily, outline);
+    this.characters.push(new RenderedCharacter(row, col, fontSize, bold, glyph));
   }
 
-  public draw(): void {
-    for (const tree of this.trees) {
-      console.log(`  ${tree.draw()}`);
+  public render(): void {
+    for (const char of this.characters) {
+      console.log(`  ${char.render()}`);
     }
   }
 
-  public getTreeCount(): number {
-    return this.trees.length;
+  public getCharacterCount(): number {
+    return this.characters.length;
   }
 }
 
 // ============ DEMO ============
 
 function main(): void {
-  console.log('=== Flyweight Pattern: Forest Rendering ===\n');
+  console.log('=== Flyweight Pattern: Text Editor Rendering ===\n');
 
-  const forest = new Forest();
+  const doc = new Document();
 
-  // Plant many trees — only 3 TreeType flyweights will be created
-  forest.plantTree(10, 20, 'Oak', 'green', 'oak_texture.png');
-  forest.plantTree(50, 80, 'Oak', 'green', 'oak_texture.png');
-  forest.plantTree(30, 60, 'Oak', 'green', 'oak_texture.png');
-  forest.plantTree(70, 10, 'Pine', 'dark-green', 'pine_texture.png');
-  forest.plantTree(90, 40, 'Pine', 'dark-green', 'pine_texture.png');
-  forest.plantTree(15, 95, 'Birch', 'light-green', 'birch_texture.png');
-  forest.plantTree(45, 70, 'Birch', 'light-green', 'birch_texture.png');
-  forest.plantTree(60, 55, 'Oak', 'green', 'oak_texture.png');
+  // Render many characters — glyphs for the same letter+font are shared
+  doc.addCharacter(1, 1, 'a', 'Arial', 'arial_a_outline', 12, false);
+  doc.addCharacter(1, 2, 'b', 'Arial', 'arial_b_outline', 12, false);
+  doc.addCharacter(1, 3, 'c', 'Arial', 'arial_c_outline', 12, false);
+  doc.addCharacter(1, 4, 'a', 'Arial', 'arial_a_outline', 14, true);
+  doc.addCharacter(2, 1, 'a', 'Arial', 'arial_a_outline', 12, false);
+  doc.addCharacter(2, 2, 'b', 'Arial', 'arial_b_outline', 16, true);
+  doc.addCharacter(2, 3, 'a', 'Arial', 'arial_a_outline', 12, false);
+  doc.addCharacter(2, 4, 'c', 'Arial', 'arial_c_outline', 12, false);
 
-  console.log('--- Rendered trees ---\n');
-  forest.draw();
+  console.log('--- Rendered characters ---\n');
+  doc.render();
 
   console.log('');
-  console.log(`Total trees planted: ${forest.getTreeCount()}`);
-  console.log(`Unique TreeType objects in memory: ${TreeTypeFactory.getTypeCount()}`);
+  console.log(`Total characters rendered: ${doc.getCharacterCount()}`);
+  console.log(`Unique Glyph objects in memory: ${GlyphFactory.getGlyphCount()}`);
 
   console.log('\n Benefits of Flyweight Pattern:');
-  console.log('  - 8 trees share only 3 TreeType objects (name, color, texture stored once)');
-  console.log('  - Each Tree only stores its unique coordinates (extrinsic state)');
-  console.log('  - Memory savings grow dramatically with more trees');
-  console.log('  - Factory ensures no duplicate flyweights are created');
+  console.log('  - 8 characters share only 3 Glyph objects (font outline, metrics stored once)');
+  console.log('  - Each RenderedCharacter only stores its unique position, size, and style (extrinsic state)');
+  console.log('  - Memory savings grow dramatically with longer documents');
+  console.log('  - Factory ensures no duplicate glyphs are created');
 }
 
 main();

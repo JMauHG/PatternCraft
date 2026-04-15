@@ -1,72 +1,93 @@
-// ❌ BAD: No Flyweight - Every tree stores its own copy of shared data
+// ❌ BAD: No Flyweight - Every character stores its own copy of glyph data
 
-class Tree {
-  private x: number;
-  private y: number;
-  private name: string;
-  private color: string;
-  private texture: string;
+class RenderedCharacter {
+  private row: number;
+  private col: number;
+  private character: string;
+  private fontFamily: string;
+  private outline: string;
+  private fontSize: number;
+  private bold: boolean;
 
-  constructor(x: number, y: number, name: string, color: string, texture: string) {
-    this.x = x;
-    this.y = y;
-    this.name = name;
-    this.color = color;
-    this.texture = texture;
+  constructor(
+    row: number,
+    col: number,
+    character: string,
+    fontFamily: string,
+    outline: string,
+    fontSize: number,
+    bold: boolean
+  ) {
+    this.row = row;
+    this.col = col;
+    this.character = character;
+    this.fontFamily = fontFamily;
+    this.outline = outline;
+    this.fontSize = fontSize;
+    this.bold = bold;
   }
 
-  public draw(): string {
-    return `${this.name} [${this.color}, ${this.texture}] at (${this.x}, ${this.y})`;
+  public render(): string {
+    const style = this.bold ? 'bold' : 'normal';
+    return `'${this.character}' [${this.fontFamily}, ${this.outline}] at (${this.row}, ${this.col}) size=${this.fontSize} ${style}`;
   }
 }
 
-class Forest {
-  private trees: Tree[] = [];
+class Document {
+  private characters: RenderedCharacter[] = [];
 
-  public plantTree(x: number, y: number, name: string, color: string, texture: string): void {
-    // Every tree gets its own copy of name, color, and texture
-    this.trees.push(new Tree(x, y, name, color, texture));
+  public addCharacter(
+    row: number,
+    col: number,
+    character: string,
+    fontFamily: string,
+    outline: string,
+    fontSize: number,
+    bold: boolean
+  ): void {
+    // Every character gets its own copy of font family and outline data
+    this.characters.push(new RenderedCharacter(row, col, character, fontFamily, outline, fontSize, bold));
   }
 
-  public draw(): void {
-    for (const tree of this.trees) {
-      console.log(`  ${tree.draw()}`);
+  public render(): void {
+    for (const char of this.characters) {
+      console.log(`  ${char.render()}`);
     }
   }
 
-  public getTreeCount(): number {
-    return this.trees.length;
+  public getCharacterCount(): number {
+    return this.characters.length;
   }
 }
 
 // ============ DEMO ============
 
 function main(): void {
-  console.log('=== Anti-Example: No Flyweight (Duplicated State) ===\n');
+  console.log('=== Anti-Example: No Flyweight (Duplicated Glyph Data) ===\n');
 
-  const forest = new Forest();
+  const doc = new Document();
 
-  // Each tree stores its own "oak_texture.png", "green", "Oak" — all duplicated
-  forest.plantTree(10, 20, 'Oak', 'green', 'oak_texture.png');
-  forest.plantTree(50, 80, 'Oak', 'green', 'oak_texture.png');
-  forest.plantTree(30, 60, 'Oak', 'green', 'oak_texture.png');
-  forest.plantTree(70, 10, 'Pine', 'dark-green', 'pine_texture.png');
-  forest.plantTree(90, 40, 'Pine', 'dark-green', 'pine_texture.png');
-  forest.plantTree(15, 95, 'Birch', 'light-green', 'birch_texture.png');
-  forest.plantTree(45, 70, 'Birch', 'light-green', 'birch_texture.png');
-  forest.plantTree(60, 55, 'Oak', 'green', 'oak_texture.png');
+  // Each character stores its own fontFamily and outline — all duplicated
+  doc.addCharacter(1, 1, 'a', 'Arial', 'arial_a_outline', 12, false);
+  doc.addCharacter(1, 2, 'b', 'Arial', 'arial_b_outline', 12, false);
+  doc.addCharacter(1, 3, 'c', 'Arial', 'arial_c_outline', 12, false);
+  doc.addCharacter(1, 4, 'a', 'Arial', 'arial_a_outline', 14, true);
+  doc.addCharacter(2, 1, 'a', 'Arial', 'arial_a_outline', 12, false);
+  doc.addCharacter(2, 2, 'b', 'Arial', 'arial_b_outline', 16, true);
+  doc.addCharacter(2, 3, 'a', 'Arial', 'arial_a_outline', 12, false);
+  doc.addCharacter(2, 4, 'c', 'Arial', 'arial_c_outline', 12, false);
 
-  console.log('--- Rendered trees ---\n');
-  forest.draw();
+  console.log('--- Rendered characters ---\n');
+  doc.render();
 
   console.log('');
-  console.log(`Total trees created: ${forest.getTreeCount()}`);
-  console.log(`Objects storing texture data: ${forest.getTreeCount()} (one per tree!)`);
+  console.log(`Total characters created: ${doc.getCharacterCount()}`);
+  console.log(`Objects storing glyph data: ${doc.getCharacterCount()} (one per character!)`);
 
   console.log('\n Problems with this approach:');
-  console.log('  - 8 trees = 8 copies of name, color, and texture strings');
-  console.log('  - With 1,000,000 trees, texture data alone could consume gigabytes');
-  console.log('  - Identical data is duplicated across every object');
+  console.log('  - 8 characters = 8 copies of font family and outline data');
+  console.log('  - With a 100,000-character document, glyph data alone could consume massive memory');
+  console.log('  - Identical glyph data is duplicated across every character object');
   console.log('  - No distinction between shared and unique state');
 }
 
