@@ -4,7 +4,7 @@
 
 Abstract Factory allows us to produce families of related objects without specifying their concrete classes. It provides an interface for creating families of related or dependent objects without specifying their concrete classes.
 
-**Mnemonics:** Furniture Factory - you pick a factory (Modern, Victorian), and it produces a whole set of matching furniture.
+**Analogy:** Furniture Factory - you pick a factory (Modern, Victorian), and it produces a whole set of matching furniture.
 
 **Real-world use:** UI Themes - when you need to create a consistent set of UI components (buttons, cards, inputs) that match a specific theme (Dark, Light, High Contrast).
 

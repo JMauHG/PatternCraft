@@ -4,7 +4,7 @@
 
 Bridge separates an abstraction from its implementation so that the two can vary independently. Instead of combining abstraction and implementation in one class hierarchy, you split them into two separate hierarchies connected by composition.
 
-**Mnemonics:** Think of a TV remote control. The remote (abstraction) works with any device (implementation) — a TV, a radio, or a smart speaker. You can change the remote or the device independently without affecting the other.
+**Analogy:** Think of a TV remote control. The remote (abstraction) works with any device (implementation) — a TV, a radio, or a smart speaker. You can change the remote or the device independently without affecting the other.
 
 **Real-world use:** A notification system where the delivery channel (email, SMS, push) is independent from the notification type (alert, reminder, promotion). Adding a new channel or a new notification type doesn't require modifying the other.
 

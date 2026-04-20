@@ -4,7 +4,7 @@
 
 Prototype allows us to copy existing objects without the code depending on their classes. It creates new objects by cloning existing instances rather than creating them from scratch.
 
-**Mnemonics:** Mitotic division of a cell (biology, remember?). After mitotic division, a pair of identical cells is formed. The original cell acts as a prototype and takes an active role in creating the copy.
+**Analogy:** Mitotic division of a cell (biology, remember?). After mitotic division, a pair of identical cells is formed. The original cell acts as a prototype and takes an active role in creating the copy.
 
 **Real-world use:** Financial systems (banks and insurance) often manage very complex rule sets for loans and policies. These rules include dozens of interest calculations, risk factors, regional constraints, tax rules, penalties, and eligibility checks. Initializing these objects from scratch is expensive and error-prone. Instead, they maintain a base template (e.g., "standard mortgage loan") and clone it to apply small variations.
 

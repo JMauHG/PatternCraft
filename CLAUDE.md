@@ -52,7 +52,7 @@ Required sections in this exact order:
 ## Definition
 One-paragraph explanation of what the pattern does.
 
-**Mnemonics:** A memorable real-world analogy.
+**Analogy:** A memorable real-world analogy.
 
 **Real-world use:** A concrete software engineering scenario.
 

@@ -4,7 +4,7 @@
 
 Singleton guarantees that a class has only one instance and provides a global access point to it.
 
-**Mnemonics:** A country can have only one official government.
+**Analogy:** A country can have only one official government.
 
 **Real-world use**: An application should only have one connection to the database.
 

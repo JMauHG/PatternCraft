@@ -4,7 +4,7 @@
 
 Decorator lets you attach new behaviors to objects by placing them inside wrapper objects that contain those behaviors. Decorators implement the same interface as the wrapped object, so they can be stacked in any combination at runtime.
 
-**Mnemonics:** When you're cold, you wrap yourself in a sweater. Still cold? You put a jacket on top. Starting to rain? You add a raincoat. Each layer adds new behavior (warmth, water resistance) without modifying you or the other layers. You can add or remove layers independently.
+**Analogy:** When you're cold, you wrap yourself in a sweater. Still cold? You put a jacket on top. Starting to rain? You add a raincoat. Each layer adds new behavior (warmth, water resistance) without modifying you or the other layers. You can add or remove layers independently.
 
 **Real-world use:** A notification system where a base notifier sends emails, but you can dynamically wrap it with SMS, Slack, or push notification decorators. Instead of creating subclasses for every combination (`EmailAndSMS`, `EmailAndSlack`, `EmailSMSAndSlack`...), you stack only the decorators you need.
 

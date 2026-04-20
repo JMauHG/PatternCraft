@@ -4,7 +4,7 @@
 
 Composite lets you compose objects into tree structures and then work with these structures as if they were individual objects. It allows treating single objects and groups of objects uniformly through a shared interface.
 
-**Mnemonics:** Think of a military hierarchy. An army consists of divisions, divisions contain brigades, brigades have platoons, and platoons are made up of individual soldiers. When a general gives an order, it cascades down the tree — each level either executes it directly (soldiers) or delegates it to its children (divisions, brigades, platoons). The general doesn't care whether they're addressing one soldier or an entire division.
+**Analogy:** Think of a military hierarchy. An army consists of divisions, divisions contain brigades, brigades have platoons, and platoons are made up of individual soldiers. When a general gives an order, it cascades down the tree — each level either executes it directly (soldiers) or delegates it to its children (divisions, brigades, platoons). The general doesn't care whether they're addressing one soldier or an entire division.
 
 **Real-world use:** An e-commerce order system where a package can contain individual products or smaller boxes, each of which can contain more products or boxes. To calculate the total price, you call `getPrice()` on the root — leaves return their own price, and boxes recursively sum the prices of their children.
 

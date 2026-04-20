@@ -4,7 +4,7 @@
 
 Proxy provides a substitute or placeholder for another object. It controls access to the original, letting you perform actions before or after the request reaches it — without the client knowing the difference.
 
-**Mnemonics:** A credit card is a proxy for your bank account, which is itself a proxy for cash. All three let you pay for things. The credit card doesn't hold money, but it controls access to your bank account — adding convenience, security checks, and spending limits along the way.
+**Analogy:** A credit card is a proxy for your bank account, which is itself a proxy for cash. All three let you pay for things. The credit card doesn't hold money, but it controls access to your bank account — adding convenience, security checks, and spending limits along the way.
 
 **Real-world use:** A database query proxy that adds lazy initialization (only connects when the first query is made), caching (returns stored results for repeated queries), and logging (records every query for auditing) — all transparently, without modifying the actual database service.
 

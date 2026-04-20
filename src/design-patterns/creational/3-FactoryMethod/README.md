@@ -4,7 +4,7 @@
 
 Factory Method allows a superclass to create objects, while subclasses can alter the type of objects that will be created. Instead of calling the `new` operator to build objects directly, a special factory method is invoked.
 
-**Mnemonics:** Add Sea Logistic to implementation that supports only Road Logistic.
+**Analogy:** Add Sea Logistic to implementation that supports only Road Logistic.
 
 **Real-world use:** Basically all ORMs use this pattern to create different model instances. ORMs do not explicitly name their code according to the design pattern, but the functionality is the same (e.g., Sequelize, TypeORM, Prisma).
 

@@ -4,7 +4,7 @@
 
 Facade provides a simplified interface to a complex subsystem — a library, framework, or set of interdependent classes. It doesn't hide the subsystem; it offers a convenient shortcut for the most common use cases.
 
-**Mnemonics:** When you call a phone shop to place an order, the operator is a facade. You just say what you want and they handle everything behind the scenes — checking inventory, processing payment, and scheduling delivery. You never need to call each department yourself.
+**Analogy:** When you call a phone shop to place an order, the operator is a facade. You just say what you want and they handle everything behind the scenes — checking inventory, processing payment, and scheduling delivery. You never need to call each department yourself.
 
 **Real-world use:** A video conversion library that internally manages codecs, audio mixers, bitrate analyzers, and file writers. Instead of forcing clients to initialize and orchestrate dozens of objects in the right order, a `VideoConverter` facade exposes a single `convert(file, format)` method.
 

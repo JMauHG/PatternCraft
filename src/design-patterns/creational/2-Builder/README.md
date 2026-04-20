@@ -4,7 +4,7 @@
 
 Builder helps construct complex objects step by step, without exposing internal construction logic.
 
-**Mnemonics:** BuBurger joint: creating burgers step by step.
+**Analogy:** BuBurger joint: creating burgers step by step.
 
 **Real-world use**: Stripe uses Builder to create PaymentIntents (see [Java SDK](https://docs.stripe.com/api/payment_intents/create?lang=java)).
 

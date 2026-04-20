@@ -4,7 +4,7 @@
 
 Flyweight lets you fit more objects into the available amount of RAM by sharing common parts of state between multiple objects instead of storing all the data in each one. It splits object state into **intrinsic** (shared, immutable) and **extrinsic** (unique, context-dependent) parts.
 
-**Mnemonics:** Imagine rendering a forest with millions of trees. Each tree has a position (unique) but shares the same texture, color, and mesh data with other trees of the same species. Instead of duplicating megabytes of texture data per tree, all oaks share one `TreeType` object — only their coordinates differ.
+**Analogy:** Imagine rendering a forest with millions of trees. Each tree has a position (unique) but shares the same texture, color, and mesh data with other trees of the same species. Instead of duplicating megabytes of texture data per tree, all oaks share one `TreeType` object — only their coordinates differ.
 
 **Real-world use:** A text editor rendering a document. Each character on screen has a unique position and style context, but the glyph data (font outline, metrics) for the letter "a" is shared across every occurrence. A flyweight pool stores one glyph per character, and each rendered character just references it with its position.
 
